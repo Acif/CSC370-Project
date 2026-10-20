@@ -19,7 +19,7 @@ CREATE TABLE Movies (
     CHECK (budget IS NULL OR budget >= 0),
     CHECK (revenue IS NULL OR revenue >= 0),
     CHECK (rating_average IS NULL
-           OR (rating_average >= 1.0 AND rating_average <= 5.0)),
+           OR (rating_average >= 0.0 AND rating_average <= 5.0)),
     CHECK (rating_count IS NULL OR rating_count >= 0)
 );
 

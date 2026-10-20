@@ -6,8 +6,16 @@
 
 ## Priority 1 — Address instructor feedback
 
-- [ ] **Expand the schema from 5 tables to at least 8.** Existing: `Movies`, `Genres`, `MovieGenre`, `Users`, `Ratings`. Evaluate `People`, `MovieCast`, and `MovieCrew` as three useful additions **if the available Kaggle credits data supports them**. Agree on attributes, keys, relationships, and scope before implementing. Avoid creating arbitrary tables just to reach eight.
-- [ ] **Make movie vote fields consistent everywhere.** `schema(1).sql` currently uses `rating_average` / `rating_count`, while `norm.md` and database-design README use `vote_average` / `vote_count`. Choose one naming convention; recommended: `vote_average` / `vote_count` for imported TMDB data. Update DDL, CSV import variables, ERD, README, normalization, requirements, and queries together.
+- [X] **Expand the schema from 5 tables to at least 8.** 
+  Implemented 11 tables:
+  - Movies, Genres, MovieGenre
+  - Users, Ratings
+  - Actors, MovieActor
+  - Directors, MovieDirector
+  - Studios, MovieStudio
+
+- [X] **Make movie vote fields consistent everywhere.**
+
 - [ ] **Document the two rating scales.** Source movie votes are on a 0–10 scale; individual system ratings are 1–5. Explain that source aggregates are not computed from this system's `Ratings` rows. Derive system averages and counts using `AVG()` and `COUNT()` queries instead of storing redundant copies.
 - [ ] **Fix the conceptual ERD.** Remove arrowheads from attribute-to-entity lines. Put relationship arrows only where cardinality requires them, following the instructor's notation. Keep the conceptual M:N `RATES` and `BELONGS TO` relationships clear, and revise the diagram when new entities are agreed upon.
 - [ ] **Specify foreign-key deletion rules.** Decide per relationship whether `ON DELETE RESTRICT`, `CASCADE`, or another action matches the business requirements; explicitly document the rationale. Consider cascade for junction rows only after discussing whether deleting a movie/user should delete associated ratings.
