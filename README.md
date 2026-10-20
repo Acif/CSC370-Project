@@ -4,10 +4,6 @@
 
 # Movie Rating System — Project Task List
 
-Based on instructor feedback (20 October 2026), the supplied `schema(1).sql`, `norm.md`, database-design README, and presentation PDF.
-
-> **Status:** Checklist items below are proposed work, not completed changes. The uploaded `requirements.md` could not be read in this session, so verify requirement numbering and wording against your repository copy before editing it.
-
 ## Priority 1 — Address instructor feedback
 
 - [ ] **Expand the schema from 5 tables to at least 8.** Existing: `Movies`, `Genres`, `MovieGenre`, `Users`, `Ratings`. Evaluate `People`, `MovieCast`, and `MovieCrew` as three useful additions **if the available Kaggle credits data supports them**. Agree on attributes, keys, relationships, and scope before implementing. Avoid creating arbitrary tables just to reach eight.
