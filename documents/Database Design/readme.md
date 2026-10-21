@@ -30,8 +30,8 @@ The Movies relation stores metadata for each movie in the system.
 - `runtime` - the runtime of the movie in minutes.
 - `budget` - the reported movie budget.
 - `revenue` - the reported movie revenue.
-- `vote_average` - the average vote imported from the source dataset.
-- `vote_count` - the number of votes represented by the source dataset.
+- `rating_average` - the average vote imported from the source dataset.
+- `rating_count` - the number of votes represented by the source dataset.
 
 The source vote information is kept separate from ratings submitted by
 users of the Movie Rating System.
