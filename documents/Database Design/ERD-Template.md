@@ -33,8 +33,8 @@
 │ runtime           │
 │ budget            │
 │ revenue           │
-│ vote_average      │
-│ vote_count        │
+│ rating_average    │
+│ rating_count      │
 └────────┬──────────┘
          │
          │ 1
