@@ -81,3 +81,13 @@
   the imported movie rating statistics.
 - R46: Movies without user-submitted ratings shall have a calculated
   user rating count of zero and a NULL user rating average.
+
+## Referential Integrity
+
+- R47: Deleting a movie shall automatically remove its associated
+  ratings, genres, actor credits, director credits, and studio associations.
+
+- R48: Deleting a user shall automatically remove their submitted ratings.
+
+- R49: Deleting a genre, actor, director, or studio shall automatically
+  remove its associated movie relationships without deleting the movies.
