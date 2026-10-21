@@ -40,11 +40,11 @@ CREATE TABLE MovieGenre(
 
     PRIMARY KEY (movie_id, genre_id),
 
-    FOREIGN KEY (movie_id) 
-        REFERENCES Movies(movie_id),
+    FOREIGN KEY (movie_id)
+        REFERENCES Movies(movie_id) ON DELETE CASCADE,
 
-    FOREIGN KEY (genre_id) 
-        REFERENCES Genres(genre_id)
+    FOREIGN KEY (genre_id)
+        REFERENCES Genres(genre_id) ON DELETE CASCADE
 );
 
 -- Create the Users table.
@@ -65,23 +65,21 @@ CREATE TABLE Users(
 -- A user can rate a movie only once.
 
 CREATE TABLE Ratings(
-
     user_id INT NOT NULL,
     movie_id INT NOT NULL,
     rating DECIMAL(2,1) NOT NULL,
     review TEXT,
     rating_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-
     PRIMARY KEY (user_id, movie_id),
 
-    FOREIGN KEY (user_id) 
-        REFERENCES Users(user_id),
+    FOREIGN KEY (user_id)
+        REFERENCES Users(user_id) ON DELETE CASCADE,
 
-    FOREIGN KEY (movie_id) 
-        REFERENCES Movies(movie_id),
+    FOREIGN KEY (movie_id)
+        REFERENCES Movies(movie_id) ON DELETE CASCADE,
 
-    CHECK (rating >=1.0 AND rating <= 5.0)
+    CHECK (rating >= 1.0 AND rating <= 5.0)
 );
 
 -- Actors and their movie appearances (from credits.csv cast entries).
