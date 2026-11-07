@@ -1,41 +1,47 @@
 # Movie Rating System — Project Task List
 
-Based on instructor feedback (20 October 2026), the supplied `schema(1).sql`, `norm.md`, database-design README, and presentation PDF.
-
-> **Status:** Checklist items below are proposed work, not completed changes. The uploaded `requirements.md` could not be read in this session, so verify requirement numbering and wording against your repository copy before editing it.
+Updated based on the latest instructor feedback and Sprint 2 goals.
 
 ## Priority 1 — Address instructor feedback
 
-- [ ] **Expand the schema from 5 tables to at least 8.** Existing: `Movies`, `Genres`, `MovieGenre`, `Users`, `Ratings`. Evaluate `People`, `MovieCast`, and `MovieCrew` as three useful additions **if the available Kaggle credits data supports them**. Agree on attributes, keys, relationships, and scope before implementing. Avoid creating arbitrary tables just to reach eight.
-- [ ] **Make movie vote fields consistent everywhere.** `schema(1).sql` currently uses `rating_average` / `rating_count`, while `norm.md` and database-design README use `vote_average` / `vote_count`. Choose one naming convention; recommended: `vote_average` / `vote_count` for imported TMDB data. Update DDL, CSV import variables, ERD, README, normalization, requirements, and queries together.
-- [ ] **Document the two rating scales.** Source movie votes are on a 0–10 scale; individual system ratings are 1–5. Explain that source aggregates are not computed from this system's `Ratings` rows. Derive system averages and counts using `AVG()` and `COUNT()` queries instead of storing redundant copies.
-- [ ] **Fix the conceptual ERD.** Remove arrowheads from attribute-to-entity lines. Put relationship arrows only where cardinality requires them, following the instructor's notation. Keep the conceptual M:N `RATES` and `BELONGS TO` relationships clear, and revise the diagram when new entities are agreed upon.
-- [ ] **Specify foreign-key deletion rules.** Decide per relationship whether `ON DELETE RESTRICT`, `CASCADE`, or another action matches the business requirements; explicitly document the rationale. Consider cascade for junction rows only after discussing whether deleting a movie/user should delete associated ratings.
+- [x] **Expand the database to at least 8 tables.** The schema now contains 11 tables: `Movies`, `Genres`, `MovieGenre`, `Users`, `Ratings`, `Actors`, `MovieActor`, `Directors`, `MovieDirector`, `Studios`, and `MovieStudio`.
+- [x] **Add ON DELETE behaviour to foreign keys.** All foreign keys now use `ON DELETE CASCADE` to remove related records when a referenced record is deleted.
+- [x] **Keep rating scales consistent.** Both imported movie averages and user ratings are stored on a 0–5 scale.
+- [x] **Separate source ratings from user ratings.** Renamed the imported fields to `source_rating_average` and `source_rating_count` to distinguish them from ratings submitted by users.
+- [x] **Prevent duplicate director credits.** Added `UNIQUE(movie_id, director_id)` to `MovieDirector` so the same director cannot be assigned to a movie more than once.
+- [ ] **Correct the ERD relationship notation.** Replace M/N labels with the arrow notation used in class. Arrows should point to the "one" side of a relationship, with no arrows for many-to-many relationships.
+- [ ] **Include credit IDs in the ERD.** Show `credit_id` for `MovieActor` and `MovieDirector` to match their primary keys in the SQL schema.
+- [ ] **Review the Actors and Directors tables.** Consider using a shared `People` table so someone who both acts and directs is only stored once. This would also prevent inconsistencies if their name changes.
 
-## Priority 2 — Keep implementation and documentation aligned
+## Priority 2 — Keep implementation and documentation consistent
 
-- [ ] **Separate schema setup from data loading.** Keep table creation in `sql/schema.sql`; move `LOAD DATA LOCAL INFILE` statements into a separate import script (for example, `sql/import_data.sql`). This makes DDL reproducible without local CSVs.
-- [ ] **Remove machine-specific import paths.** Current script uses `/Users/morgs/Documents/...`. Document how each teammate should configure paths and `LOCAL INFILE`, and use portable paths or configurable instructions where possible. Avoid relying on `SET GLOBAL local_infile=ON` without discussing required privileges and security.
-- [ ] **Verify CSV imports on the actual cleaned files.** Check column order, line endings (`\r\n` vs `\n`), date formats, missing values, numeric conversion, duplicate IDs, and foreign-key coverage. Record row counts and import errors.
-- [ ] **Update the database-design README.** Add descriptions, attributes, candidate keys, cardinalities, and foreign keys for each new table. Correct `generes` to `genres` in the overview. Keep the nested README as the folder's landing page.
-- [ ] **Update `norm.md` for every new relation.** List candidate keys and nontrivial functional dependencies, then verify BCNF under the stated business rules. Revisit any dependency assumptions changed by the new design.
-- [ ] **Update requirements to reflect the agreed scope.** Add requirements for the new entities and explicit deletion behavior. Ensure each requirement is traceable to a table, constraint, relationship, or query.
+- [ ] **Update the database-design README.** Include all 11 tables, their attributes, primary keys, foreign keys, and relationships. The current documentation still describes the original five-table design.
+- [ ] **Update `norm.md`.** Replace the old rating column names and include the additional candidate key for `MovieDirector`. Recheck the BCNF analysis if the table structure changes.
+- [ ] **Update the ERD documentation.** Make sure all relationships, attributes, and primary keys match the latest schema.
+- [ ] **Verify rating conversion during imports.** Confirm that imported source averages are converted from 0–10 to 0–5 before being inserted into `Movies`.
+- [ ] **Separate table creation from data imports.** Keep the table definitions in `schema.sql` and create a separate SQL file for importing data.
+- [ ] **Check CSV compatibility.** Make sure the cleaned CSV files have the correct columns, data types, and formatting before importing them into MySQL.
+- [ ] **Keep requirements updated.** Make sure `requirements.md` reflects any changes to the tables, relationships, and constraints.
 
-## Priority 3 — Implement and demonstrate functionality
+## Priority 3 — Implement Sprint 2 functionality
 
-- [ ] **Create sample data or load a representative dataset subset.** Include movies, genres, users, ratings, and all new relations. Keep test data small enough for predictable demonstrations.
-- [ ] **Implement rating aggregation queries.** Show `AVG(rating)` and `COUNT(*)` grouped by movie, including how movies with no ratings are handled.
-- [ ] **Implement relationship queries.** Examples: users and their rated movies, movies with their genres, and any new person/cast/crew relationships.
-- [ ] **Test integrity constraints.** Confirm rejection of duplicate `(user_id, movie_id)` ratings, invalid 1–5 ratings, missing foreign-key references, duplicate usernames/emails/genre names, and invalid metadata values.
-- [ ] **Test `ON DELETE` behavior.** For each foreign key, attempt a deletion and confirm the actual result matches the documented policy.
-- [ ] **Capture reproducible demo evidence.** Save commands, expected outcomes, actual outputs, and relevant screenshots/logs. Do not claim tests passed until they have run.
+- [ ] **Implement advanced SQL queries.** Write queries using `WHERE`, `HAVING`, `GROUP BY`, and joins to filter movies, calculate averages, and find users or movies that meet specific conditions.
+- [ ] **Implement more complex DML operations.** Use `INSERT`, `UPDATE`, and `DELETE` statements involving related tables. Test how these operations affect foreign keys and existing records.
+- [ ] **Populate the Ratings table.** Add sample users and ratings so the database can be used to test queries involving user-submitted ratings.
+- [ ] **Test rating aggregation queries.** Use `AVG()` and `COUNT()` to calculate ratings for each movie. Include movies with no ratings using `LEFT JOIN`.
+- [ ] **Create and import sample credits data.** Prepare a smaller `credits.csv` dataset and use it to populate `Actors`, `Directors`, `MovieActor`, and `MovieDirector`.
+- [ ] **Implement queries involving NULL values.** Use `IS NULL`, `IS NOT NULL`, `COALESCE()`, and outer joins to handle missing movie information and movies without user ratings. Test how NULL affects conditions using `AND`, `OR`, and comparisons.
+- [ ] **Test referential integrity constraints.** Attempt inserts and deletes that violate foreign keys, primary keys, unique constraints, and rating restrictions. Confirm that MySQL handles them as expected.
+- [ ] **Evaluate query performance.** Use `EXPLAIN ANALYZE` to examine execution plans and compare query performance. Check whether indexes improve performance on larger datasets.
+- [ ] **Implement relationship queries.** Retrieve movies with their genres, actors, directors, studios, and user ratings using joins across multiple tables.
 
 ## Priority 4 — Sprint presentation and collaboration
 
-- [ ] **Update the sprint video/slides with the feedback fixes.** Demonstrate the revised ERD, 8+ table schema, updated normalization argument, import process, and representative SQL queries.
-- [ ] **Record each member's actual contribution.** Use Git commits, task assignments, and demo responsibilities rather than assigning generic work retroactively.
-- [ ] **Report what was completed versus still planned.** Clearly identify any unfinished dataset imports, advanced design decisions, or tests.
-- [ ] **Set measurable next-sprint goals.** Specify concrete query/test deliverables, ownership, and evidence required for completion; align with the course's upcoming material.
-- [ ] **Review the repository before submission.** Ensure SQL runs in the documented order, diagrams match the final DDL, file names match references, and no local credentials or private paths remain in committed instructions.
-
+- [ ] **Show more individual work in the sprint videos.** Spend more time walking through the SQL and changes each member personally worked on. Explain how the code works and show the results of running it.
+- [ ] **Demonstrate Sprint 2 queries.** Run the advanced SQL, DML, NULL-handling, and aggregation queries in MySQL. Include examples that show both successful operations and constraint violations.
+- [ ] **Show the updated database design.** Include the revised ERD and explain any changes made to address the instructor's feedback.
+- [ ] **Record query results and testing.** Keep screenshots or outputs showing successful imports, query results, constraint tests, and performance measurements.
+- [ ] **Track individual contributions.** Make sure Git commits and the sprint presentation clearly show what each member worked on.
+- [ ] **Review unfinished work before submission.** Confirm that the schema, ERD, requirements, and documentation are consistent. Check that the SQL scripts work in the correct order.
+- [ ] **Set goals for the following sprint.** Identify any unfinished queries, imports, or database changes and decide which tasks should be completed next.
 
