@@ -17,8 +17,7 @@ INSERT INTO MovieGenre (movie_id, genre_id) VALUES
 (101, 1), (101, 3), (102, 2), (102, 3), (103, 1), (103, 2),
 (104, 2), (104, 4), (105, 5), (106, 2), (106, 3);
 
--- Password values are illustrative placeholders, not usable passwords or hashes.
--- Never use plaintext passwords in a real application.
+
 INSERT INTO Users (user_id, username, password, email) VALUES
 (1, 'demo_alex', 'DEMO_NOT_A_PASSWORD', 'alex@example.invalid'),
 (2, 'demo_sam', 'DEMO_NOT_A_PASSWORD', 'sam@example.invalid'),
