@@ -13,17 +13,6 @@ LEFT JOIN Ratings AS r
 GROUP BY m.movie_id, m.title
 ORDER BY m.movie_id;
 
--- Query 2: Compare imported source statistics with ratings from this system.
-SELECT
-    m.title,
-    m.source_rating_average,
-    m.source_rating_count,
-    ROUND(AVG(r.rating), 2) AS user_rating_average,
-    COUNT(r.user_id) AS user_rating_count
-FROM Movies AS m
-LEFT JOIN Ratings AS r ON m.movie_id = r.movie_id
-GROUP BY m.movie_id, m.title, m.source_rating_average, m.source_rating_count
-ORDER BY m.title;
 
 -- Query 3: Highest-rated movies with at least two user ratings.
 SELECT
