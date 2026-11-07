@@ -93,7 +93,7 @@ CREATE TABLE Actors (
 CREATE TABLE MovieActor (
     movie_id INT NOT NULL,
     actor_id INT NOT NULL,
-    credit_id VARCHAR(100) NOT NULL,
+    
     character_name VARCHAR(255),
     cast_order INT,
     FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE,
@@ -110,7 +110,7 @@ CREATE TABLE Directors (
 CREATE TABLE MovieDirector (
     movie_id INT NOT NULL,
     director_id INT NOT NULL,
-    credit_id VARCHAR(100) NOT NULL,
+    
 
     UNIQUE (movie_id, director_id),
 
