@@ -12,15 +12,17 @@ CREATE TABLE Movies (
     runtime DECIMAL(6,1),
     budget BIGINT,
     revenue BIGINT,
-    rating_average DECIMAL(3,1),
-    rating_count INT,
+    source_rating_average DECIMAL(3,1),
+    source_rating_count INT,
 
     CHECK (runtime IS NULL OR runtime >= 0),
     CHECK (budget IS NULL OR budget >= 0),
     CHECK (revenue IS NULL OR revenue >= 0),
-    CHECK (rating_average IS NULL
-           OR (rating_average >= 0.0 AND rating_average <= 5.0)),
-    CHECK (rating_count IS NULL OR rating_count >= 0)
+    CHECK (source_rating_average IS NULL
+       OR (source_rating_average >= 0.0
+           AND source_rating_average <= 5.0)),
+    CHECK (source_rating_count IS NULL
+       OR source_rating_count >= 0)
 );
 
 -- Create the Genres table.
@@ -110,9 +112,15 @@ CREATE TABLE MovieDirector (
     movie_id INT NOT NULL,
     director_id INT NOT NULL,
     credit_id VARCHAR(100) NOT NULL,
+
     PRIMARY KEY (credit_id),
-    FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE,
-    FOREIGN KEY (director_id) REFERENCES Directors(director_id) ON DELETE CASCADE
+    UNIQUE (movie_id, director_id),
+
+    FOREIGN KEY (movie_id)
+        REFERENCES Movies(movie_id) ON DELETE CASCADE,
+
+    FOREIGN KEY (director_id)
+        REFERENCES Directors(director_id) ON DELETE CASCADE
 );
 
 -- Studios are production companies from movies_metadata.csv.
