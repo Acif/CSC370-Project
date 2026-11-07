@@ -91,3 +91,5 @@
 
 - R49: Deleting a genre, actor, director, or studio shall automatically
   remove its associated movie relationships without deleting the movies.
+
+- R50: A director shall be associated with a particular movie at most once.
